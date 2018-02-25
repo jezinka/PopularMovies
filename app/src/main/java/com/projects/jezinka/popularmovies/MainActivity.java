@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -32,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         gridview = findViewById(R.id.gridview);
 
-        new FetchMovieTask(this).execute();
+        new FetchMovieTask(this).execute("popular");
     }
 
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse("http://api.themoviedb.org/3/movie/popular")
+    public static URL buildUrl(String modus) {
+        Uri builtUri = Uri.parse("http://api.themoviedb.org/3/movie/" + modus)
                 .buildUpon()
                 .appendQueryParameter("api_key", "xxxXxxxxXxxx")
                 .build();
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         protected MovieDetails[] doInBackground(String... params) {
             MovieDetails[] moviesList = new MovieDetails[20];
 
-            URL movieRequestUrl = buildUrl();
+            URL movieRequestUrl = buildUrl(params[0]);
 
             try {
                 String movies = getResponseFromHttpUrl(movieRequestUrl);
@@ -114,5 +117,27 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "The query returns no results");
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.popular:
+                new FetchMovieTask(this).execute("popular");
+                return true;
+            case R.id.rated:
+                new FetchMovieTask(this).execute("top_rated");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 }
