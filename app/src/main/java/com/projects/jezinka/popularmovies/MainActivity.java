@@ -1,5 +1,6 @@
 package com.projects.jezinka.popularmovies;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,8 +16,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         gridview = findViewById(R.id.gridview);
 
-        new FetchMovieTask().execute();
-
-//        Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+        new FetchMovieTask(this).execute();
     }
 
     public static URL buildUrl() {
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
 
         Log.v(TAG, "Built URI " + url);
@@ -75,11 +72,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, List<MovieDetails>> {
+    public class FetchMovieTask extends AsyncTask<String, Void, MovieDetails[]> {
+
+        Context taskContext;
+
+        public FetchMovieTask(Context taskContext) {
+            this.taskContext = taskContext;
+        }
 
         @Override
-        protected List<MovieDetails> doInBackground(String... params) {
-            List<MovieDetails> moviesList = new ArrayList<>();
+        protected MovieDetails[] doInBackground(String... params) {
+            MovieDetails[] moviesList = new MovieDetails[20];
 
             URL movieRequestUrl = buildUrl();
 
@@ -91,19 +94,24 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < moviesJSONArray.length(); i++) {
                         JSONObject movie = moviesJSONArray.getJSONObject(i);
                         MovieDetails movieDetails = new MovieDetails(movie);
-                        moviesList.add(movieDetails);
+                        moviesList[i] = movieDetails;
                     }
                 }
                 return moviesList;
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(List<MovieDetails> movieDetails) {
-            Log.i(TAG, movieDetails.toString());
+        protected void onPostExecute(MovieDetails[] movieDetails) {
+            if (movieDetails != null && movieDetails.length > 0) {
+                MoviePostersAdapter adapter = new MoviePostersAdapter(this.taskContext, movieDetails);
+                gridview.setAdapter(adapter);
+            } else {
+                Log.i(TAG, "The query returns no results");
+            }
         }
     }
 }

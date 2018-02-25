@@ -40,4 +40,15 @@ public class MovieDetails {
         this.voteAverage = movieJSON.optDouble("vote_average");
         this.poster = movieJSON.optString("poster_path");
     }
+
+    @Override
+    public String toString() {
+        return "MovieDetails{" +
+                "title='" + title + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", poster='" + poster + '\'' +
+                ", voteAverage=" + voteAverage +
+                ", plotSynopsis='" + plotSynopsis + '\'' +
+                '}';
+    }
 }
