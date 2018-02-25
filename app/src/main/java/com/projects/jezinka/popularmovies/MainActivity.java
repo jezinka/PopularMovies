@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    public static final String RESULTS = "results";
 
     GridView gridview;
 
@@ -89,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String movies = getResponseFromHttpUrl(movieRequestUrl);
                 JSONObject moviesJSON = new JSONObject(movies);
-                if (moviesJSON.has("results")) {
-                    JSONArray moviesJSONArray = moviesJSON.getJSONArray("results");
+                if (moviesJSON.has(RESULTS)) {
+                    JSONArray moviesJSONArray = moviesJSON.getJSONArray(RESULTS);
                     for (int i = 0; i < moviesJSONArray.length(); i++) {
                         JSONObject movie = moviesJSONArray.getJSONObject(i);
                         MovieDetails movieDetails = new MovieDetails(movie);
