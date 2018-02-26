@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies;
+package com.projects.jezinka.popularmovies.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.projects.jezinka.popularmovies.Activity.DetailsActivity;
+import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.squareup.picasso.Picasso;
 
 public class MoviePostersAdapter extends BaseAdapter {
@@ -50,11 +52,7 @@ public class MoviePostersAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, DetailsActivity.class);
 
-                intent.putExtra(DetailsActivity.EXTRA_POSITION, position);
-                intent.putExtra(DetailsActivity.TITLE, mMovieDetails[position].getTitle());
-                intent.putExtra(DetailsActivity.PLOT, mMovieDetails[position].getPlotSynopsis());
-                intent.putExtra(DetailsActivity.RELEASE_DATE, mMovieDetails[position].getReleaseDate());
-                intent.putExtra(DetailsActivity.VOTE_AVERAGE, mMovieDetails[position].getVoteAverage());
+                intent.putExtra(DetailsActivity.ID, mMovieDetails[position].getId());
 
                 mContext.startActivity(intent);
             }

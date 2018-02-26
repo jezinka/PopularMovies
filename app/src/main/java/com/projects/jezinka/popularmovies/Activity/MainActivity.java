@@ -1,7 +1,6 @@
-package com.projects.jezinka.popularmovies;
+package com.projects.jezinka.popularmovies.Activity;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,15 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.projects.jezinka.popularmovies.Adapter.MoviePostersAdapter;
+import com.projects.jezinka.popularmovies.Model.MovieDetails;
+import com.projects.jezinka.popularmovies.R;
+import com.projects.jezinka.popularmovies.Utils.NetworkUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,43 +37,6 @@ public class MainActivity extends AppCompatActivity {
         new FetchMovieTask(this).execute("popular");
     }
 
-    public static URL buildUrl(String modus) {
-        Uri builtUri = Uri.parse("http://api.themoviedb.org/3/movie/" + modus)
-                .buildUpon()
-                .appendQueryParameter("api_key", "xxxXxxxxXxxx")
-                .build();
-
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        Log.v(TAG, "Built URI " + url);
-
-        return url;
-    }
-
-
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = urlConnection.getInputStream();
-
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
-        } finally {
-            urlConnection.disconnect();
-        }
-    }
 
     public class FetchMovieTask extends AsyncTask<String, Void, MovieDetails[]> {
 
@@ -88,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         protected MovieDetails[] doInBackground(String... params) {
             MovieDetails[] moviesList = new MovieDetails[20];
 
-            URL movieRequestUrl = buildUrl(params[0]);
+            URL movieRequestUrl = NetworkUtils.buildUrl(params[0]);
 
             try {
-                String movies = getResponseFromHttpUrl(movieRequestUrl);
+                String movies = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
                 JSONObject moviesJSON = new JSONObject(movies);
                 if (moviesJSON.has(RESULTS)) {
                     JSONArray moviesJSONArray = moviesJSON.getJSONArray(RESULTS);
