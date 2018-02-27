@@ -52,7 +52,7 @@ public class MoviePostersAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, DetailsActivity.class);
 
-                intent.putExtra(DetailsActivity.ID, mMovieDetails[position].getId());
+                intent.putExtra(DetailsActivity.MOVIE_DETAILS, mMovieDetails[position]);
 
                 mContext.startActivity(intent);
             }

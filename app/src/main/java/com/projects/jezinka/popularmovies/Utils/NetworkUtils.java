@@ -43,9 +43,9 @@ public class NetworkUtils {
             boolean hasInput = scanner.hasNext();
             if (hasInput) {
                 return scanner.next();
-            } else {
-                return null;
             }
+            return null;
+
         } finally {
             urlConnection.disconnect();
         }

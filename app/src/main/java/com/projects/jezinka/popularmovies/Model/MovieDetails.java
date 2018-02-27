@@ -1,14 +1,17 @@
 package com.projects.jezinka.popularmovies.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONObject;
 
-public class MovieDetails {
+public class MovieDetails implements Parcelable {
+
     private String id;
     private String title;
     private String releaseDate;
     private String poster;
     private String plotSynopsis;
-
     private Double voteAverage;
 
     public String getTitle() {
@@ -35,7 +38,13 @@ public class MovieDetails {
         return id;
     }
 
-    public MovieDetails() {
+    public MovieDetails(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.releaseDate = in.readString();
+        this.plotSynopsis = in.readString();
+        this.voteAverage = in.readDouble();
+        this.poster = in.readString();
     }
 
     public MovieDetails(JSONObject movieJSON) {
@@ -58,4 +67,32 @@ public class MovieDetails {
                 ", plotSynopsis='" + plotSynopsis + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(releaseDate);
+        parcel.writeString(plotSynopsis);
+        parcel.writeDouble(voteAverage);
+        parcel.writeString(poster);
+    }
+
+    public static final Parcelable.Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
+        @Override
+        public MovieDetails createFromParcel(Parcel parcel) {
+            return new MovieDetails(parcel);
+        }
+
+        @Override
+        public MovieDetails[] newArray(int i) {
+            return new MovieDetails[0];
+        }
+    };
+
 }
