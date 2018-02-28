@@ -3,35 +3,33 @@ package com.projects.jezinka.popularmovies.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
-
 public class MovieDetails implements Parcelable {
 
     private String id;
     private String title;
-    private String releaseDate;
-    private String poster;
-    private String plotSynopsis;
-    private Double voteAverage;
+    private String release_date;
+    private String poster_path;
+    private String overview;
+    private Double vote_average;
 
     public String getTitle() {
         return title;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public String getPoster() {
-        return poster;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public Double getVoteAverage() {
-        return voteAverage;
+    public Double getVote_average() {
+        return vote_average;
     }
 
-    public String getPlotSynopsis() {
-        return plotSynopsis;
+    public String getOverview() {
+        return overview;
     }
 
     public String getId() {
@@ -41,19 +39,10 @@ public class MovieDetails implements Parcelable {
     public MovieDetails(Parcel in) {
         this.id = in.readString();
         this.title = in.readString();
-        this.releaseDate = in.readString();
-        this.plotSynopsis = in.readString();
-        this.voteAverage = in.readDouble();
-        this.poster = in.readString();
-    }
-
-    public MovieDetails(JSONObject movieJSON) {
-        this.id = movieJSON.optString("id");
-        this.title = movieJSON.optString("title");
-        this.releaseDate = movieJSON.optString("release_date");
-        this.plotSynopsis = movieJSON.optString("overview");
-        this.voteAverage = movieJSON.optDouble("vote_average");
-        this.poster = movieJSON.optString("poster_path");
+        this.release_date = in.readString();
+        this.overview = in.readString();
+        this.vote_average = in.readDouble();
+        this.poster_path = in.readString();
     }
 
     @Override
@@ -61,10 +50,10 @@ public class MovieDetails implements Parcelable {
         return "MovieDetails{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
-                ", releaseDate='" + releaseDate + '\'' +
-                ", poster='" + poster + '\'' +
-                ", voteAverage=" + voteAverage +
-                ", plotSynopsis='" + plotSynopsis + '\'' +
+                ", release_date='" + release_date + '\'' +
+                ", poster_path='" + poster_path + '\'' +
+                ", vote_average=" + vote_average +
+                ", overview='" + overview + '\'' +
                 '}';
     }
 
@@ -77,10 +66,10 @@ public class MovieDetails implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(title);
-        parcel.writeString(releaseDate);
-        parcel.writeString(plotSynopsis);
-        parcel.writeDouble(voteAverage);
-        parcel.writeString(poster);
+        parcel.writeString(release_date);
+        parcel.writeString(overview);
+        parcel.writeDouble(vote_average);
+        parcel.writeString(poster_path);
     }
 
     public static final Parcelable.Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
