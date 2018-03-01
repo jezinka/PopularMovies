@@ -32,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         ImageView imageView = findViewById(R.id.poster);
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w342" + movieDetail.getPoster_path()).into(imageView);
+        Picasso.with(this).load(movieDetail.getDetailPosterPath()).into(imageView);
 
         TextView titleTextView = findViewById(R.id.title_tv);
         titleTextView.setText(movieDetail.getTitle());
@@ -41,10 +41,10 @@ public class DetailsActivity extends AppCompatActivity {
         plotTextView.setText(movieDetail.getOverview());
 
         TextView releaseDateTextView = findViewById(R.id.realease_date_tv);
-        releaseDateTextView.setText(movieDetail.getRelease_date());
+        releaseDateTextView.setText(movieDetail.getReleaseDate());
 
         TextView voteAverageTextView = findViewById(R.id.vote_tv);
-        voteAverageTextView.setText(String.valueOf(movieDetail.getVote_average()));
+        voteAverageTextView.setText(String.valueOf(movieDetail.getVoteAverage()));
     }
 
     private void closeOnError() {

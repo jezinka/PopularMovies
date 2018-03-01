@@ -45,7 +45,7 @@ public class MoviePostersAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.with(mContext).load("https://image.tmdb.org/t/p/w185" + mMovieDetails[position].getPoster_path()).into(imageView);
+        Picasso.with(mContext).load(mMovieDetails[position].getListPosterPath()).into(imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

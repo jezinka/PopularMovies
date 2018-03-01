@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class MovieDetails implements Parcelable {
+    private static final String posterBasePath = "https://image.tmdb.org/t/p/";
 
     private String id;
     private String title;
@@ -16,15 +17,19 @@ public class MovieDetails implements Parcelable {
         return title;
     }
 
-    public String getRelease_date() {
+    public String getReleaseDate() {
         return release_date;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getDetailPosterPath() {
+        return posterBasePath + "w342/" + poster_path;
     }
 
-    public Double getVote_average() {
+    public String getListPosterPath() {
+        return posterBasePath + "w185/" + poster_path;
+    }
+
+    public Double getVoteAverage() {
         return vote_average;
     }
 
