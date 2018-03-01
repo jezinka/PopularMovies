@@ -45,7 +45,11 @@ public class MoviePostersAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.with(mContext).load(mMovieDetails[position].getListPosterPath()).into(imageView);
+        Picasso.with(mContext)
+                .load(mMovieDetails[position].getListPosterPath())
+                .placeholder(android.R.drawable.ic_menu_zoom)
+                .error(android.R.drawable.stat_notify_error)
+                .into(imageView);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

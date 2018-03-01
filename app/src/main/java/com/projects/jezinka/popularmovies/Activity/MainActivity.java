@@ -16,6 +16,7 @@ import com.projects.jezinka.popularmovies.Model.MovieDetailsList;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
 
+import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
 
+    @BindView(R.id.gridview)
     GridView gridview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        gridview = findViewById(R.id.gridview);
 
         sendQueryForMovies(this, POPULAR);
     }
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<MovieDetailsList> call, @NonNull Throwable t) {
-                Log.i(TAG, "The query returns no results");
+                Log.i(TAG, getResources().getString(R.string.no_results));
             }
         });
     }

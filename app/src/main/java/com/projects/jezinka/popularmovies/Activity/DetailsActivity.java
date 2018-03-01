@@ -11,14 +11,30 @@ import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
+
+    @BindView(R.id.title_tv)
+    TextView titleTextView;
+    @BindView(R.id.plot_tv)
+    TextView plotTextView;
+    @BindView(R.id.realease_date_tv)
+    TextView releaseDateTextView;
+    @BindView(R.id.vote_tv)
+    TextView voteAverageTextView;
+    @BindView(R.id.poster)
+    ImageView imageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -31,19 +47,15 @@ public class DetailsActivity extends AppCompatActivity {
             closeOnError();
         }
 
-        ImageView imageView = findViewById(R.id.poster);
-        Picasso.with(this).load(movieDetail.getDetailPosterPath()).into(imageView);
+        Picasso.with(this)
+                .load(movieDetail.getDetailPosterPath())
+                .placeholder(android.R.drawable.ic_menu_zoom)
+                .error(android.R.drawable.stat_notify_error)
+                .into(imageView);
 
-        TextView titleTextView = findViewById(R.id.title_tv);
         titleTextView.setText(movieDetail.getTitle());
-
-        TextView plotTextView = findViewById(R.id.plot_tv);
         plotTextView.setText(movieDetail.getOverview());
-
-        TextView releaseDateTextView = findViewById(R.id.realease_date_tv);
         releaseDateTextView.setText(movieDetail.getReleaseDate());
-
-        TextView voteAverageTextView = findViewById(R.id.vote_tv);
         voteAverageTextView.setText(String.valueOf(movieDetail.getVoteAverage()));
     }
 
