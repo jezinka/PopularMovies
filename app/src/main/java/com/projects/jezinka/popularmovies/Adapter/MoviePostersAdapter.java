@@ -47,7 +47,7 @@ public class MoviePostersAdapter extends BaseAdapter {
 
         Picasso.with(mContext)
                 .load(mMovieDetails[position].getListPosterPath())
-                .placeholder(android.R.drawable.ic_menu_zoom)
+                .placeholder(android.R.drawable.star_off)
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageView);
 

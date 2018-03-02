@@ -49,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(movieDetail.getDetailPosterPath())
-                .placeholder(android.R.drawable.ic_menu_zoom)
+                .placeholder(android.R.drawable.star_off)
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageView);
 
