@@ -28,9 +28,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/label_width"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/label_margin"
+                    android:gravity="end"
                     android:text="@string/title"
                     android:textStyle="bold" />
 
@@ -46,7 +47,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/label_width"
+                    android:gravity="end"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/label_margin"
                     android:text="@string/plot"
@@ -64,9 +66,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/label_width"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/label_margin"
+                    android:gravity="end"
                     android:text="@string/avg_vote"
                     android:textStyle="bold" />
 
@@ -82,7 +85,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/label_width"
+                    android:gravity="end"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/label_margin"
                     android:text="@string/release_date"
