@@ -7,4 +7,6 @@
     <string name="movie_poster">Movie Poster</string>
     <string name="no_results">The query returns no results</string>
     <string name="details_activity">Details</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
 </resources>

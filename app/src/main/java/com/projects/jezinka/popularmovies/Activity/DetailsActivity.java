@@ -1,8 +1,11 @@
 package com.projects.jezinka.popularmovies.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,8 @@ import butterknife.ButterKnife;
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
+    public static final String MOVIE_ID = "ID";
+    private static final String TAG = "Details Activity";
 
     @BindView(R.id.title_tv)
     TextView titleTextView;
@@ -28,7 +33,8 @@ public class DetailsActivity extends AppCompatActivity {
     TextView voteAverageTextView;
     @BindView(R.id.poster)
     ImageView imageView;
-
+    @BindView(R.id.review_btn)
+    Button reviewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
             closeOnError();
         }
 
-        MovieDetails movieDetail = intent.getExtras().getParcelable(MOVIE_DETAILS);
+        final MovieDetails movieDetail = intent.getExtras().getParcelable(MOVIE_DETAILS);
 
         if (movieDetail == null) {
             closeOnError();
@@ -57,6 +63,17 @@ public class DetailsActivity extends AppCompatActivity {
         plotTextView.setText(movieDetail.getOverview());
         releaseDateTextView.setText(movieDetail.getReleaseDate());
         voteAverageTextView.setText(String.valueOf(movieDetail.getVoteAverage()));
+
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+
+                Intent intent = new Intent(context, ReviewsActivity.class);
+                intent.putExtra(MOVIE_ID, movieDetail.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void closeOnError() {

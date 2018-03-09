@@ -22,12 +22,20 @@
             android:name=".Activity.DetailsActivity"
             android:label="@string/details_activity"
             android:parentActivityName=".Activity.MainActivity">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".Activity.ReviewsActivity"
+            android:label="@string/reviews"
+            android:parentActivityName=".Activity.ReviewsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.DetailsActivity" />
+        </activity>
     </application>
 
 </manifest>

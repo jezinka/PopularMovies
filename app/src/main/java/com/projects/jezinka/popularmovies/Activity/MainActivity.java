@@ -38,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        sendQueryForMovies(this, POPULAR);
+        sendQueryForMovies(POPULAR);
     }
 
-    private void sendQueryForMovies(final Context mContext, String param) {
+    private void sendQueryForMovies(String param) {
+        final Context mContext = this;
         TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
         final Call<MovieDetailsList> call = theMovieDbService.loadMovies(param, BuildConfig.MY_MOVIE_DB_API_KEY);
 
@@ -50,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<MovieDetailsList> call, @NonNull Response<MovieDetailsList> response) {
 
                 MovieDetailsList body = response.body();
-                MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, body.getResults());
-                gridview.setAdapter(adapter);
+
+                if (body != null) {
+                    MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, body.getResults());
+                    gridview.setAdapter(adapter);
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<MovieDetailsList> call, @NonNull Throwable t) {
-                Log.i(TAG, getResources().getString(R.string.no_results));
+                Log.e(TAG, t.getLocalizedMessage());
             }
         });
     }
@@ -66,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.popular:
-                sendQueryForMovies(this, POPULAR);
+                sendQueryForMovies(POPULAR);
                 return true;
             case R.id.rated:
-                sendQueryForMovies(this, TOP_RATED);
+                sendQueryForMovies(TOP_RATED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
