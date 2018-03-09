@@ -98,16 +98,22 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/review_btn"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reviews" />
+                android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/trailers" />
+                <Button
+                    android:id="@+id/review_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviews" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trailers" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

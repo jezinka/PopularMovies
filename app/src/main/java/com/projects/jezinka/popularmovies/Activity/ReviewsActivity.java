@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.projects.jezinka.popularmovies.Adapter.ReviewsAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
+import com.projects.jezinka.popularmovies.Model.MovieReview;
 import com.projects.jezinka.popularmovies.Model.MovieReviewList;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
@@ -47,9 +48,9 @@ public class ReviewsActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<MovieReviewList> call, @NonNull Response<MovieReviewList> response) {
 
                 MovieReviewList body = response.body();
-                String[] results = body.getResults();
+                MovieReview[] results = body.getResults();
                 Log.i("test", "Results length: " + String.valueOf(results.length));
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, results);
+                ReviewsAdapter adapter = new ReviewsAdapter(mContext, results);
                 reviewList.setAdapter(adapter);
             }
 
