@@ -28,22 +28,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.MainActivity" />
         </activity>
+
         <activity
             android:name=".Activity.ReviewsActivity"
-            android:label="@string/reviews"
-            android:parentActivityName=".Activity.ReviewsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.DetailsActivity" />
-        </activity>
+            android:label="@string/reviews" />
+
         <activity
             android:name=".Activity.TrailersActivity"
-            android:label="@string/trailers"
-            android:parentActivityName=".Activity.DetailsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.DetailsActivity" />
-        </activity>
+            android:label="@string/trailers" />
     </application>
 
 </manifest>

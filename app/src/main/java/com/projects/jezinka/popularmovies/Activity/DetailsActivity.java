@@ -22,6 +22,7 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
     public static final String MOVIE_ID = "ID";
     private static final String TAG = "Details Activity";
+    MovieDetails movieDetails;
 
     @BindView(R.id.title_tv)
     TextView titleTextView;
@@ -44,27 +45,30 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        if (intent == null) {
-            closeOnError();
+        if (savedInstanceState != null) {
+            movieDetails = savedInstanceState.getParcelable(MOVIE_DETAILS);
+        } else {
+            Intent intent = getIntent();
+            if (intent == null) {
+                closeOnError();
+            }
+            movieDetails = intent.getExtras().getParcelable(MOVIE_DETAILS);
         }
 
-        final MovieDetails movieDetail = intent.getExtras().getParcelable(MOVIE_DETAILS);
-
-        if (movieDetail == null) {
+        if (movieDetails == null) {
             closeOnError();
         }
 
         Picasso.with(this)
-                .load(movieDetail.getDetailPosterPath())
+                .load(movieDetails.getDetailPosterPath())
                 .placeholder(android.R.drawable.star_off)
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageView);
 
-        titleTextView.setText(movieDetail.getTitle());
-        plotTextView.setText(movieDetail.getOverview());
-        releaseDateTextView.setText(movieDetail.getReleaseDate());
-        voteAverageTextView.setText(String.valueOf(movieDetail.getVoteAverage()));
+        titleTextView.setText(movieDetails.getTitle());
+        plotTextView.setText(movieDetails.getOverview());
+        releaseDateTextView.setText(movieDetails.getReleaseDate());
+        voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Context context = view.getContext();
 
                 Intent intent = new Intent(context, ReviewsActivity.class);
-                intent.putExtra(MOVIE_ID, movieDetail.getId());
+                intent.putExtra(MOVIE_ID, movieDetails.getId());
                 context.startActivity(intent);
             }
         });
@@ -83,7 +87,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Context context = view.getContext();
 
                 Intent intent = new Intent(context, TrailersActivity.class);
-                intent.putExtra(MOVIE_ID, movieDetail.getId());
+                intent.putExtra(MOVIE_ID, movieDetails.getId());
                 context.startActivity(intent);
             }
         });
@@ -92,5 +96,11 @@ public class DetailsActivity extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, "Movie not available", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable(MOVIE_DETAILS, movieDetails);
     }
 }
