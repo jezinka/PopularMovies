@@ -9,8 +9,8 @@ import android.widget.ListView;
 
 import com.projects.jezinka.popularmovies.Adapter.ReviewsAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
+import com.projects.jezinka.popularmovies.Model.GenericList;
 import com.projects.jezinka.popularmovies.Model.MovieReview;
-import com.projects.jezinka.popularmovies.Model.MovieReviewList;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
 
@@ -41,13 +41,13 @@ public class ReviewsActivity extends AppCompatActivity {
     private void sendQueryForReviews(String id) {
         final Context mContext = this;
         TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
-        final Call<MovieReviewList> call = theMovieDbService.loadReviews(id, BuildConfig.MY_MOVIE_DB_API_KEY);
+        final Call<GenericList<MovieReview>> call = theMovieDbService.loadReviews(id, BuildConfig.MY_MOVIE_DB_API_KEY);
 
-        call.enqueue(new Callback<MovieReviewList>() {
+        call.enqueue(new Callback<GenericList<MovieReview>>() {
             @Override
-            public void onResponse(@NonNull Call<MovieReviewList> call, @NonNull Response<MovieReviewList> response) {
+            public void onResponse(@NonNull Call<GenericList<MovieReview>> call, @NonNull Response<GenericList<MovieReview>> response) {
 
-                MovieReviewList body = response.body();
+                GenericList<MovieReview> body = response.body();
                 MovieReview[] results = body.getResults();
                 Log.i("test", "Results length: " + String.valueOf(results.length));
                 ReviewsAdapter adapter = new ReviewsAdapter(mContext, results);
@@ -55,7 +55,7 @@ public class ReviewsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MovieReviewList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<GenericList<MovieReview>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
             }
         });

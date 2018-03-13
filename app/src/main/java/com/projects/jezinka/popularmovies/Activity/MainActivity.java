@@ -12,7 +12,8 @@ import android.widget.GridView;
 
 import com.projects.jezinka.popularmovies.Adapter.MoviePostersAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
-import com.projects.jezinka.popularmovies.Model.MovieDetailsList;
+import com.projects.jezinka.popularmovies.Model.GenericList;
+import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
 
@@ -44,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
     private void sendQueryForMovies(String param) {
         final Context mContext = this;
         TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
-        final Call<MovieDetailsList> call = theMovieDbService.loadMovies(param, BuildConfig.MY_MOVIE_DB_API_KEY);
+        final Call<GenericList<MovieDetails>> call = theMovieDbService.loadMovies(param, BuildConfig.MY_MOVIE_DB_API_KEY);
 
-        call.enqueue(new Callback<MovieDetailsList>() {
+        call.enqueue(new Callback<GenericList<MovieDetails>>() {
             @Override
-            public void onResponse(@NonNull Call<MovieDetailsList> call, @NonNull Response<MovieDetailsList> response) {
+            public void onResponse(@NonNull Call<GenericList<MovieDetails>> call, @NonNull Response<GenericList<MovieDetails>> response) {
 
-                MovieDetailsList body = response.body();
+                GenericList<MovieDetails> body = response.body();
 
                 if (body != null) {
                     MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, body.getResults());
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MovieDetailsList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<GenericList<MovieDetails>> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getLocalizedMessage());
             }
         });

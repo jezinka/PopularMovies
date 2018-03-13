@@ -9,8 +9,8 @@ import android.widget.ListView;
 
 import com.projects.jezinka.popularmovies.Adapter.TrailersAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
+import com.projects.jezinka.popularmovies.Model.GenericList;
 import com.projects.jezinka.popularmovies.Model.MovieVideo;
-import com.projects.jezinka.popularmovies.Model.MovieVideoList;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
 
@@ -41,13 +41,13 @@ public class TrailersActivity extends AppCompatActivity {
     private void sendQueryForReviews(String id) {
         final Context mContext = this;
         TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
-        final Call<MovieVideoList> call = theMovieDbService.loadVideos(id, BuildConfig.MY_MOVIE_DB_API_KEY);
+        final Call<GenericList<MovieVideo>> call = theMovieDbService.loadVideos(id, BuildConfig.MY_MOVIE_DB_API_KEY);
 
-        call.enqueue(new Callback<MovieVideoList>() {
+        call.enqueue(new Callback<GenericList<MovieVideo>>() {
             @Override
-            public void onResponse(@NonNull Call<MovieVideoList> call, @NonNull Response<MovieVideoList> response) {
+            public void onResponse(@NonNull Call<GenericList<MovieVideo>> call, @NonNull Response<GenericList<MovieVideo>> response) {
 
-                MovieVideoList body = response.body();
+                GenericList<MovieVideo> body = response.body();
                 MovieVideo[] results = body.getResults();
                 Log.i("test", "Results length: " + String.valueOf(results.length));
                 TrailersAdapter adapter = new TrailersAdapter(mContext, results);
@@ -55,7 +55,7 @@ public class TrailersActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MovieVideoList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<GenericList<MovieVideo>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
             }
         });

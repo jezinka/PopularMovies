@@ -1,8 +1,9 @@
 package com.projects.jezinka.popularmovies.Service;
 
-import com.projects.jezinka.popularmovies.Model.MovieDetailsList;
-import com.projects.jezinka.popularmovies.Model.MovieReviewList;
-import com.projects.jezinka.popularmovies.Model.MovieVideoList;
+import com.projects.jezinka.popularmovies.Model.GenericList;
+import com.projects.jezinka.popularmovies.Model.MovieDetails;
+import com.projects.jezinka.popularmovies.Model.MovieReview;
+import com.projects.jezinka.popularmovies.Model.MovieVideo;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -13,17 +14,17 @@ import retrofit2.http.Query;
 
 public interface TheMovieDbService {
     @GET("{param}")
-    Call<MovieDetailsList> loadMovies(
+    Call<GenericList<MovieDetails>> loadMovies(
             @Path("param") String param,
             @Query("api_key") String apiKey);
 
     @GET("{id}/reviews")
-    Call<MovieReviewList> loadReviews(
+    Call<GenericList<MovieReview>> loadReviews(
             @Path("id") String id,
             @Query("api_key") String apiKey);
 
     @GET("{id}/videos")
-    Call<MovieVideoList> loadVideos(
+    Call<GenericList<MovieVideo>> loadVideos(
             @Path("id") String id,
             @Query("api_key") String apiKey);
 
