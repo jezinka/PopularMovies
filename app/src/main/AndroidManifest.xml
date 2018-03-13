@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activity.DetailsActivity" />
         </activity>
+        <activity
+            android:name=".Activity.TrailersActivity"
+            android:label="@string/trailers"
+            android:parentActivityName=".Activity.DetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activity.DetailsActivity" />
+        </activity>
     </application>
 
 </manifest>

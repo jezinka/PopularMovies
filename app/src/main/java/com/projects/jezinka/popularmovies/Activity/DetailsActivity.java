@@ -35,6 +35,8 @@ public class DetailsActivity extends AppCompatActivity {
     ImageView imageView;
     @BindView(R.id.review_btn)
     Button reviewButton;
+    @BindView(R.id.trailers_btn)
+    Button trailersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,17 @@ public class DetailsActivity extends AppCompatActivity {
                 Context context = view.getContext();
 
                 Intent intent = new Intent(context, ReviewsActivity.class);
+                intent.putExtra(MOVIE_ID, movieDetail.getId());
+                context.startActivity(intent);
+            }
+        });
+
+        trailersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+
+                Intent intent = new Intent(context, TrailersActivity.class);
                 intent.putExtra(MOVIE_ID, movieDetail.getId());
                 context.startActivity(intent);
             }

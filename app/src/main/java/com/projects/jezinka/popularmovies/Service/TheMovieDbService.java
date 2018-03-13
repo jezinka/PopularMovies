@@ -2,6 +2,7 @@ package com.projects.jezinka.popularmovies.Service;
 
 import com.projects.jezinka.popularmovies.Model.MovieDetailsList;
 import com.projects.jezinka.popularmovies.Model.MovieReviewList;
+import com.projects.jezinka.popularmovies.Model.MovieVideoList;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -18,6 +19,11 @@ public interface TheMovieDbService {
 
     @GET("{id}/reviews")
     Call<MovieReviewList> loadReviews(
+            @Path("id") String id,
+            @Query("api_key") String apiKey);
+
+    @GET("{id}/videos")
+    Call<MovieVideoList> loadVideos(
             @Path("id") String id,
             @Query("api_key") String apiKey);
 

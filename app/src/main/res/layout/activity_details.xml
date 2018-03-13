@@ -110,6 +110,7 @@
                     android:text="@string/reviews" />
 
                 <Button
+                    android:id="@+id/trailers_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/trailers" />
