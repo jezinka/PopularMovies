@@ -12,4 +12,5 @@
     <string name="author">Author:</string>
     <string name="content">Content:</string>
     <string name="movie_video">Movie video</string>
+    <string name="favorites_button">Favorites Button</string>
 </resources>
