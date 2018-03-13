@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class DetailsActivity extends AppCompatActivity {
     Button reviewButton;
     @BindView(R.id.trailers_btn)
     Button trailersButton;
+    @BindView(R.id.favorites_btn)
+    ImageButton favoritesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,16 @@ public class DetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(context, TrailersActivity.class);
                 intent.putExtra(MOVIE_ID, movieDetails.getId());
                 context.startActivity(intent);
+            }
+        });
+
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieDetails.setFavorite(!movieDetails.isFavorite());
+
+                int imageResource = movieDetails.isFavorite() ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off;
+                favoritesButton.setImageResource(imageResource);
             }
         });
     }

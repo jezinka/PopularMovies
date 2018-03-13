@@ -12,6 +12,15 @@ public class MovieDetails implements Parcelable {
     private String poster_path;
     private String overview;
     private Double vote_average;
+    private boolean isFavorite;
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public String getTitle() {
         return title;

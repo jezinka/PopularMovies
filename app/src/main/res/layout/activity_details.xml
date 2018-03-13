@@ -114,6 +114,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/trailers" />
+
+                <ImageButton
+                    android:id="@+id/favorites_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/btn_star_big_off" />
             </LinearLayout>
 
         </LinearLayout>
