@@ -1,6 +1,8 @@
 package com.projects.jezinka.popularmovies.Activity;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,8 @@ import android.widget.GridView;
 
 import com.projects.jezinka.popularmovies.Adapter.MoviePostersAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
+import com.projects.jezinka.popularmovies.Data.MovieDetailsContract;
+import com.projects.jezinka.popularmovies.Data.MovieDetailsDbHelper;
 import com.projects.jezinka.popularmovies.Model.GenericList;
 import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
@@ -33,12 +37,16 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.gridview)
     GridView gridview;
 
+    SQLiteDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        MovieDetailsDbHelper helper = new MovieDetailsDbHelper(this);
+        mDb = helper.getWritableDatabase();
         sendQueryForMovies(POPULAR);
     }
 
@@ -66,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void sendQueryForFavorites() {
+        MovieDetails[] data;
+
+        Cursor cursor = getAllFavorites();
+        if (cursor != null && cursor.moveToFirst()) {
+            data = new MovieDetails[cursor.getCount()];
+            do {
+                data[cursor.getPosition()] = new MovieDetails(cursor);
+
+            } while (cursor.moveToNext());
+            MoviePostersAdapter adapter = new MoviePostersAdapter(this, data);
+            gridview.setAdapter(adapter);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -75,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.rated:
                 sendQueryForMovies(TOP_RATED);
+                return true;
+            case R.id.favorites:
+                sendQueryForFavorites();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -86,5 +112,17 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    private Cursor getAllFavorites() {
+        return mDb.query(
+                MovieDetailsContract.MovieDetailsEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                MovieDetailsContract.MovieDetailsEntry.MOVIE_TITLE_COLUMN
+        );
     }
 }

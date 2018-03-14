@@ -1,7 +1,9 @@
 package com.projects.jezinka.popularmovies.Activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.projects.jezinka.popularmovies.Data.MovieDetailsDbHelper;
 import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
 import com.squareup.picasso.Picasso;
@@ -18,12 +21,16 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.projects.jezinka.popularmovies.Data.MovieDetailsContract.MovieDetailsEntry;
+
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
     public static final String MOVIE_ID = "ID";
     private static final String TAG = "Details Activity";
+
     MovieDetails movieDetails;
+    SQLiteDatabase mDb;
 
     @BindView(R.id.title_tv)
     TextView titleTextView;
@@ -46,6 +53,11 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+
+        MovieDetailsDbHelper helper = new MovieDetailsDbHelper(this);
+        mDb = helper.getWritableDatabase();
+
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
@@ -100,8 +112,13 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 movieDetails.setFavorite(!movieDetails.isFavorite());
 
-                int imageResource = movieDetails.isFavorite() ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off;
-                favoritesButton.setImageResource(imageResource);
+                if (movieDetails.isFavorite()) {
+                    favoritesButton.setImageResource(android.R.drawable.btn_star_big_on);
+                    addFavorites(movieDetails);
+                } else {
+                    favoritesButton.setImageResource(android.R.drawable.btn_star_big_off);
+                    removeFavorites(movieDetails.getId());
+                }
             }
         });
     }
@@ -115,5 +132,27 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putParcelable(MOVIE_DETAILS, movieDetails);
+    }
+
+    private long addFavorites(MovieDetails movieDetails) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieDetailsEntry.MOVIE_ID_COLUMN, movieDetails.getId());
+        contentValues.put(MovieDetailsEntry.MOVIE_TITLE_COLUMN, movieDetails.getTitle());
+        contentValues.put(MovieDetailsEntry.MOVIE_POSTER_COLUMN, movieDetails.getPosterPath());
+        contentValues.put(MovieDetailsEntry.MOVIE_OVERVIEW_COLUMN, movieDetails.getOverview());
+        contentValues.put(MovieDetailsEntry.MOVIE_RELEASE_DATE_COLUMN, movieDetails.getReleaseDate());
+        contentValues.put(MovieDetailsEntry.MOVIE_VOTE_AVERAGE_COLUMN, movieDetails.getVoteAverage());
+
+        return mDb.insert(
+                MovieDetailsEntry.TABLE_NAME,
+                null,
+                contentValues
+        );
+    }
+
+    private void removeFavorites(final String movieId) {
+        mDb.delete(MovieDetailsEntry.TABLE_NAME,
+                "ID=?",
+                new String[]{movieId});
     }
 }

@@ -1,7 +1,10 @@
 package com.projects.jezinka.popularmovies.Model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import static com.projects.jezinka.popularmovies.Data.MovieDetailsContract.MovieDetailsEntry;
 
 public class MovieDetails implements Parcelable {
     private static final String posterBasePath = "https://image.tmdb.org/t/p/";
@@ -9,7 +12,9 @@ public class MovieDetails implements Parcelable {
     private String id;
     private String title;
     private String release_date;
+
     private String poster_path;
+
     private String overview;
     private Double vote_average;
     private boolean isFavorite;
@@ -50,6 +55,10 @@ public class MovieDetails implements Parcelable {
         return id;
     }
 
+    public String getPosterPath() {
+        return poster_path;
+    }
+
     public MovieDetails(Parcel in) {
         this.id = in.readString();
         this.title = in.readString();
@@ -57,6 +66,16 @@ public class MovieDetails implements Parcelable {
         this.overview = in.readString();
         this.vote_average = in.readDouble();
         this.poster_path = in.readString();
+    }
+
+    public MovieDetails(Cursor cursor) {
+        this.id = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_ID_COLUMN));
+        this.title = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_TITLE_COLUMN));
+        this.release_date = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_RELEASE_DATE_COLUMN));
+        this.overview = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_OVERVIEW_COLUMN));
+        this.vote_average = cursor.getDouble(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_VOTE_AVERAGE_COLUMN));
+        this.poster_path = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_POSTER_COLUMN));
+        this.isFavorite = true;
     }
 
     @Override
