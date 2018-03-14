@@ -1,10 +1,10 @@
-package com.projects.jezinka.popularmovies.Data;
+package com.projects.jezinka.popularmovies.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.projects.jezinka.popularmovies.Data.MovieDetailsContract.MovieDetailsEntry;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry;
 
 
 public class MovieDetailsDbHelper extends SQLiteOpenHelper {

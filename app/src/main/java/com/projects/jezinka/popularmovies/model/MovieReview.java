@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Model;
+package com.projects.jezinka.popularmovies.model;
 
 public class MovieReview {
     String id;

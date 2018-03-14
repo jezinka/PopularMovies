@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Adapter;
+package com.projects.jezinka.popularmovies.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.projects.jezinka.popularmovies.Model.MovieVideo;
 import com.projects.jezinka.popularmovies.R;
+import com.projects.jezinka.popularmovies.model.MovieVideo;
 
 public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
     private MovieVideo[] movieVideos;

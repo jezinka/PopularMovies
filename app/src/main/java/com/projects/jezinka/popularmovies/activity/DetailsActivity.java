@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Activity;
+package com.projects.jezinka.popularmovies.activity;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,15 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.projects.jezinka.popularmovies.Data.MovieDetailsDbHelper;
-import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
+import com.projects.jezinka.popularmovies.data.MovieDetailsDbHelper;
+import com.projects.jezinka.popularmovies.model.MovieDetails;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.projects.jezinka.popularmovies.Data.MovieDetailsContract.MovieDetailsEntry;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry;
 
 public class DetailsActivity extends AppCompatActivity {
 

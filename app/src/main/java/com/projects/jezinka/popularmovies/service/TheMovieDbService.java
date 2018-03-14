@@ -1,9 +1,9 @@
-package com.projects.jezinka.popularmovies.Service;
+package com.projects.jezinka.popularmovies.service;
 
-import com.projects.jezinka.popularmovies.Model.GenericList;
-import com.projects.jezinka.popularmovies.Model.MovieDetails;
-import com.projects.jezinka.popularmovies.Model.MovieReview;
-import com.projects.jezinka.popularmovies.Model.MovieVideo;
+import com.projects.jezinka.popularmovies.model.GenericList;
+import com.projects.jezinka.popularmovies.model.MovieDetails;
+import com.projects.jezinka.popularmovies.model.MovieReview;
+import com.projects.jezinka.popularmovies.model.MovieVideo;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

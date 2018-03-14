@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Data;
+package com.projects.jezinka.popularmovies.data;
 
 import android.provider.BaseColumns;
 

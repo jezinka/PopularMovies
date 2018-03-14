@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Adapter;
+package com.projects.jezinka.popularmovies.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.projects.jezinka.popularmovies.Activity.DetailsActivity;
-import com.projects.jezinka.popularmovies.Model.MovieDetails;
+import com.projects.jezinka.popularmovies.activity.DetailsActivity;
+import com.projects.jezinka.popularmovies.model.MovieDetails;
 import com.squareup.picasso.Picasso;
 
 public class MoviePostersAdapter extends BaseAdapter {

@@ -1,10 +1,10 @@
-package com.projects.jezinka.popularmovies.Model;
+package com.projects.jezinka.popularmovies.model;
 
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import static com.projects.jezinka.popularmovies.Data.MovieDetailsContract.MovieDetailsEntry;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry;
 
 public class MovieDetails implements Parcelable {
     private static final String posterBasePath = "https://image.tmdb.org/t/p/";

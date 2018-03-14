@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Adapter;
+package com.projects.jezinka.popularmovies.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.projects.jezinka.popularmovies.Model.MovieReview;
 import com.projects.jezinka.popularmovies.R;
+import com.projects.jezinka.popularmovies.model.MovieReview;
 
 public class ReviewsAdapter extends ArrayAdapter<MovieReview> {
     private MovieReview[] movieReviews;

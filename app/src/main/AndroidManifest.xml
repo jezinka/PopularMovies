@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,22 +19,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.DetailsActivity"
+            android:name=".activity.DetailsActivity"
             android:label="@string/details_activity"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".Activity.ReviewsActivity"
+            android:name=".activity.ReviewsActivity"
             android:label="@string/reviews" />
 
         <activity
-            android:name=".Activity.TrailersActivity"
+            android:name=".activity.TrailersActivity"
             android:label="@string/trailers" />
     </application>
 

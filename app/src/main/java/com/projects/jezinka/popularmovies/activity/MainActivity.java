@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Activity;
+package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,14 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import com.projects.jezinka.popularmovies.Adapter.MoviePostersAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
-import com.projects.jezinka.popularmovies.Data.MovieDetailsContract;
-import com.projects.jezinka.popularmovies.Data.MovieDetailsDbHelper;
-import com.projects.jezinka.popularmovies.Model.GenericList;
-import com.projects.jezinka.popularmovies.Model.MovieDetails;
 import com.projects.jezinka.popularmovies.R;
-import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
+import com.projects.jezinka.popularmovies.adapter.MoviePostersAdapter;
+import com.projects.jezinka.popularmovies.data.MovieDetailsContract;
+import com.projects.jezinka.popularmovies.data.MovieDetailsDbHelper;
+import com.projects.jezinka.popularmovies.model.GenericList;
+import com.projects.jezinka.popularmovies.model.MovieDetails;
+import com.projects.jezinka.popularmovies.service.TheMovieDbService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

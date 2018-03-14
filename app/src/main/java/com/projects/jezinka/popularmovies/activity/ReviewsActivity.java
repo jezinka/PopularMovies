@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Activity;
+package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 
-import com.projects.jezinka.popularmovies.Adapter.ReviewsAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
-import com.projects.jezinka.popularmovies.Model.GenericList;
-import com.projects.jezinka.popularmovies.Model.MovieReview;
 import com.projects.jezinka.popularmovies.R;
-import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
+import com.projects.jezinka.popularmovies.adapter.ReviewsAdapter;
+import com.projects.jezinka.popularmovies.model.GenericList;
+import com.projects.jezinka.popularmovies.model.MovieReview;
+import com.projects.jezinka.popularmovies.service.TheMovieDbService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

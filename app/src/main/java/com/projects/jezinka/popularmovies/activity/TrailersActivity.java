@@ -1,4 +1,4 @@
-package com.projects.jezinka.popularmovies.Activity;
+package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 
-import com.projects.jezinka.popularmovies.Adapter.TrailersAdapter;
 import com.projects.jezinka.popularmovies.BuildConfig;
-import com.projects.jezinka.popularmovies.Model.GenericList;
-import com.projects.jezinka.popularmovies.Model.MovieVideo;
 import com.projects.jezinka.popularmovies.R;
-import com.projects.jezinka.popularmovies.Service.TheMovieDbService;
+import com.projects.jezinka.popularmovies.adapter.TrailersAdapter;
+import com.projects.jezinka.popularmovies.model.GenericList;
+import com.projects.jezinka.popularmovies.model.MovieVideo;
+import com.projects.jezinka.popularmovies.service.TheMovieDbService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
