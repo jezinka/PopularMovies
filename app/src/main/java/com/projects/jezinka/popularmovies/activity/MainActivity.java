@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 null,
                 null,
-                MovieDetailsContract.MovieDetailsEntry.MOVIE_TITLE_COLUMN
+                MovieDetailsContract.MovieDetailsEntry.TITLE
         );
     }
 }

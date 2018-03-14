@@ -69,12 +69,12 @@ public class MovieDetails implements Parcelable {
     }
 
     public MovieDetails(Cursor cursor) {
-        this.id = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_ID_COLUMN));
-        this.title = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_TITLE_COLUMN));
-        this.release_date = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_RELEASE_DATE_COLUMN));
-        this.overview = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_OVERVIEW_COLUMN));
-        this.vote_average = cursor.getDouble(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_VOTE_AVERAGE_COLUMN));
-        this.poster_path = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.MOVIE_POSTER_COLUMN));
+        this.id = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.ID));
+        this.title = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.TITLE));
+        this.release_date = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.RELEASE_DATE));
+        this.overview = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.OVERVIEW));
+        this.vote_average = cursor.getDouble(cursor.getColumnIndex(MovieDetailsEntry.VOTE_AVERAGE));
+        this.poster_path = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.POSTER));
         this.isFavorite = true;
     }
 

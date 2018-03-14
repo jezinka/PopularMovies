@@ -141,12 +141,12 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void addFavorites(MovieDetails movieDetails) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieDetailsEntry.MOVIE_ID_COLUMN, movieDetails.getId());
-        contentValues.put(MovieDetailsEntry.MOVIE_TITLE_COLUMN, movieDetails.getTitle());
-        contentValues.put(MovieDetailsEntry.MOVIE_POSTER_COLUMN, movieDetails.getPosterPath());
-        contentValues.put(MovieDetailsEntry.MOVIE_OVERVIEW_COLUMN, movieDetails.getOverview());
-        contentValues.put(MovieDetailsEntry.MOVIE_RELEASE_DATE_COLUMN, movieDetails.getReleaseDate());
-        contentValues.put(MovieDetailsEntry.MOVIE_VOTE_AVERAGE_COLUMN, movieDetails.getVoteAverage());
+        contentValues.put(MovieDetailsEntry.ID, movieDetails.getId());
+        contentValues.put(MovieDetailsEntry.TITLE, movieDetails.getTitle());
+        contentValues.put(MovieDetailsEntry.POSTER, movieDetails.getPosterPath());
+        contentValues.put(MovieDetailsEntry.OVERVIEW, movieDetails.getOverview());
+        contentValues.put(MovieDetailsEntry.RELEASE_DATE, movieDetails.getReleaseDate());
+        contentValues.put(MovieDetailsEntry.VOTE_AVERAGE, movieDetails.getVoteAverage());
 
         mDb.insert(
                 MovieDetailsEntry.TABLE_NAME,
@@ -157,15 +157,15 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void removeFavorites(final String movieId) {
         mDb.delete(MovieDetailsEntry.TABLE_NAME,
-                MovieDetailsEntry.MOVIE_ID_COLUMN + "=?",
+                MovieDetailsEntry.ID + "=?",
                 new String[]{movieId});
     }
 
     private int getFavoriteButtonResource(String movieId) {
 
-        String sql = "SELECT " + MovieDetailsEntry.MOVIE_ID_COLUMN +
+        String sql = "SELECT " + MovieDetailsEntry.ID +
                 " FROM " + MovieDetailsEntry.TABLE_NAME +
-                " WHERE " + MovieDetailsEntry.MOVIE_ID_COLUMN + "=" + movieId;
+                " WHERE " + MovieDetailsEntry.ID + "=" + movieId;
 
         Cursor cursor = mDb.rawQuery(sql, null);
         Boolean isFavorite = cursor.getCount() > 0;
