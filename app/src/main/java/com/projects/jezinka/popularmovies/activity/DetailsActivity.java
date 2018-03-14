@@ -3,6 +3,7 @@ package com.projects.jezinka.popularmovies.activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,9 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
     public static final String MOVIE_ID = "ID";
     private static final String TAG = "Details Activity";
+
+    private static final int BUTTON_ON = android.R.drawable.btn_star_big_on;
+    private static final int BUTTON_OFF = android.R.drawable.btn_star_big_off;
 
     MovieDetails movieDetails;
     SQLiteDatabase mDb;
@@ -84,6 +88,7 @@ public class DetailsActivity extends AppCompatActivity {
         plotTextView.setText(movieDetails.getOverview());
         releaseDateTextView.setText(movieDetails.getReleaseDate());
         voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));
+        favoritesButton.setImageResource(getFavoriteButtonResource(movieDetails.getId()));
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,10 +118,10 @@ public class DetailsActivity extends AppCompatActivity {
                 movieDetails.setFavorite(!movieDetails.isFavorite());
 
                 if (movieDetails.isFavorite()) {
-                    favoritesButton.setImageResource(android.R.drawable.btn_star_big_on);
+                    favoritesButton.setImageResource(BUTTON_ON);
                     addFavorites(movieDetails);
                 } else {
-                    favoritesButton.setImageResource(android.R.drawable.btn_star_big_off);
+                    favoritesButton.setImageResource(BUTTON_OFF);
                     removeFavorites(movieDetails.getId());
                 }
             }
@@ -134,7 +139,7 @@ public class DetailsActivity extends AppCompatActivity {
         savedInstanceState.putParcelable(MOVIE_DETAILS, movieDetails);
     }
 
-    private long addFavorites(MovieDetails movieDetails) {
+    private void addFavorites(MovieDetails movieDetails) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(MovieDetailsEntry.MOVIE_ID_COLUMN, movieDetails.getId());
         contentValues.put(MovieDetailsEntry.MOVIE_TITLE_COLUMN, movieDetails.getTitle());
@@ -143,7 +148,7 @@ public class DetailsActivity extends AppCompatActivity {
         contentValues.put(MovieDetailsEntry.MOVIE_RELEASE_DATE_COLUMN, movieDetails.getReleaseDate());
         contentValues.put(MovieDetailsEntry.MOVIE_VOTE_AVERAGE_COLUMN, movieDetails.getVoteAverage());
 
-        return mDb.insert(
+        mDb.insert(
                 MovieDetailsEntry.TABLE_NAME,
                 null,
                 contentValues
@@ -152,7 +157,20 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void removeFavorites(final String movieId) {
         mDb.delete(MovieDetailsEntry.TABLE_NAME,
-                "ID=?",
+                MovieDetailsEntry.MOVIE_ID_COLUMN + "=?",
                 new String[]{movieId});
+    }
+
+    private int getFavoriteButtonResource(String movieId) {
+
+        String sql = "SELECT " + MovieDetailsEntry.MOVIE_ID_COLUMN +
+                " FROM " + MovieDetailsEntry.TABLE_NAME +
+                " WHERE " + MovieDetailsEntry.MOVIE_ID_COLUMN + "=" + movieId;
+
+        Cursor cursor = mDb.rawQuery(sql, null);
+        Boolean isFavorite = cursor.getCount() > 0;
+        cursor.close();
+
+        return isFavorite ? BUTTON_ON : BUTTON_OFF;
     }
 }
