@@ -36,6 +36,12 @@
         <activity
             android:name=".activity.TrailersActivity"
             android:label="@string/trailers" />
+
+        <provider
+            android:name="com.projects.jezinka.popularmovies.data.MovieDetailsContentProvider"
+            android:authorities="com.projects.jezinka.popularmovies"
+            android:exported="false" />
+
     </application>
 
 </manifest>

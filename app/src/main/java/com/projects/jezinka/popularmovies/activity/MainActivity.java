@@ -2,7 +2,6 @@ package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +14,6 @@ import android.widget.GridView;
 import com.projects.jezinka.popularmovies.BuildConfig;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.adapter.MoviePostersAdapter;
-import com.projects.jezinka.popularmovies.data.MovieDetailsContract;
-import com.projects.jezinka.popularmovies.data.MovieDetailsDbHelper;
 import com.projects.jezinka.popularmovies.model.GenericList;
 import com.projects.jezinka.popularmovies.model.MovieDetails;
 import com.projects.jezinka.popularmovies.service.TheMovieDbService;
@@ -26,6 +23,9 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.TITLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,16 +37,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.gridview)
     GridView gridview;
 
-    SQLiteDatabase mDb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        MovieDetailsDbHelper helper = new MovieDetailsDbHelper(this);
-        mDb = helper.getWritableDatabase();
         sendQueryForMovies(POPULAR);
     }
 
@@ -77,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
     private void sendQueryForFavorites() {
         MovieDetails[] data;
 
-        Cursor cursor = getAllFavorites();
+        //TODO: async task
+        Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, TITLE);
+
         if (cursor != null && cursor.moveToFirst()) {
             data = new MovieDetails[cursor.getCount()];
             do {
@@ -86,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
             MoviePostersAdapter adapter = new MoviePostersAdapter(this, data);
             gridview.setAdapter(adapter);
+            cursor.close();
         }
     }
 
@@ -112,17 +111,5 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
-    }
-
-    private Cursor getAllFavorites() {
-        return mDb.query(
-                MovieDetailsContract.MovieDetailsEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                MovieDetailsContract.MovieDetailsEntry.TITLE
-        );
     }
 }

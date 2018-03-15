@@ -1,10 +1,11 @@
 package com.projects.jezinka.popularmovies.activity;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,14 +16,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.projects.jezinka.popularmovies.R;
-import com.projects.jezinka.popularmovies.data.MovieDetailsDbHelper;
 import com.projects.jezinka.popularmovies.model.MovieDetails;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.ID;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.OVERVIEW;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.POSTER;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.RELEASE_DATE;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.TITLE;
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.VOTE_AVERAGE;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -34,7 +40,6 @@ public class DetailsActivity extends AppCompatActivity {
     private static final int BUTTON_OFF = android.R.drawable.btn_star_big_off;
 
     MovieDetails movieDetails;
-    SQLiteDatabase mDb;
 
     @BindView(R.id.title_tv)
     TextView titleTextView;
@@ -58,10 +63,6 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
-        MovieDetailsDbHelper helper = new MovieDetailsDbHelper(this);
-        mDb = helper.getWritableDatabase();
-
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
@@ -76,6 +77,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (movieDetails == null) {
             closeOnError();
+        } else {
+            movieDetails.setFavorite(getFavoriteButtonState());
         }
 
         Picasso.with(this)
@@ -88,7 +91,7 @@ public class DetailsActivity extends AppCompatActivity {
         plotTextView.setText(movieDetails.getOverview());
         releaseDateTextView.setText(movieDetails.getReleaseDate());
         voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));
-        favoritesButton.setImageResource(getFavoriteButtonResource(movieDetails.getId()));
+        favoritesButton.setImageResource(getFavoriteButtonImage());
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,11 +121,9 @@ public class DetailsActivity extends AppCompatActivity {
                 movieDetails.setFavorite(!movieDetails.isFavorite());
 
                 if (movieDetails.isFavorite()) {
-                    favoritesButton.setImageResource(BUTTON_ON);
-                    addFavorites(movieDetails);
+                    addFavorites();
                 } else {
-                    favoritesButton.setImageResource(BUTTON_OFF);
-                    removeFavorites(movieDetails.getId());
+                    removeFavorites();
                 }
             }
         });
@@ -139,38 +140,42 @@ public class DetailsActivity extends AppCompatActivity {
         savedInstanceState.putParcelable(MOVIE_DETAILS, movieDetails);
     }
 
-    private void addFavorites(MovieDetails movieDetails) {
+    private void addFavorites() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieDetailsEntry.ID, movieDetails.getId());
-        contentValues.put(MovieDetailsEntry.TITLE, movieDetails.getTitle());
-        contentValues.put(MovieDetailsEntry.POSTER, movieDetails.getPosterPath());
-        contentValues.put(MovieDetailsEntry.OVERVIEW, movieDetails.getOverview());
-        contentValues.put(MovieDetailsEntry.RELEASE_DATE, movieDetails.getReleaseDate());
-        contentValues.put(MovieDetailsEntry.VOTE_AVERAGE, movieDetails.getVoteAverage());
+        contentValues.put(ID, movieDetails.getId());
+        contentValues.put(TITLE, movieDetails.getTitle());
+        contentValues.put(POSTER, movieDetails.getPosterPath());
+        contentValues.put(OVERVIEW, movieDetails.getOverview());
+        contentValues.put(RELEASE_DATE, movieDetails.getReleaseDate());
+        contentValues.put(VOTE_AVERAGE, movieDetails.getVoteAverage());
 
-        mDb.insert(
-                MovieDetailsEntry.TABLE_NAME,
-                null,
-                contentValues
-        );
+        Uri uri = getContentResolver().insert(CONTENT_URI, contentValues);
+        if (uri != null) {
+            favoritesButton.setImageResource(BUTTON_ON);
+        }
     }
 
-    private void removeFavorites(final String movieId) {
-        mDb.delete(MovieDetailsEntry.TABLE_NAME,
-                MovieDetailsEntry.ID + "=?",
-                new String[]{movieId});
+    private void removeFavorites() {
+        Uri contentUri = ContentUris.withAppendedId(CONTENT_URI, Long.valueOf(movieDetails.getId()));
+        int deletedRows = getContentResolver().delete(contentUri, null, null);
+
+        if (deletedRows > 0) {
+            favoritesButton.setImageResource(BUTTON_OFF);
+        }
     }
 
-    private int getFavoriteButtonResource(String movieId) {
+    private boolean getFavoriteButtonState() {
+        Uri contentUri = ContentUris.withAppendedId(CONTENT_URI, Long.valueOf(movieDetails.getId()));
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, TITLE);
+        if (cursor != null) {
+            Boolean isFavorite = cursor.getCount() > 0;
+            cursor.close();
+            return isFavorite;
+        }
+        return false;
+    }
 
-        String sql = "SELECT " + MovieDetailsEntry.ID +
-                " FROM " + MovieDetailsEntry.TABLE_NAME +
-                " WHERE " + MovieDetailsEntry.ID + "=" + movieId;
-
-        Cursor cursor = mDb.rawQuery(sql, null);
-        Boolean isFavorite = cursor.getCount() > 0;
-        cursor.close();
-
-        return isFavorite ? BUTTON_ON : BUTTON_OFF;
+    private int getFavoriteButtonImage() {
+        return movieDetails.isFavorite() ? BUTTON_ON : BUTTON_OFF;
     }
 }
