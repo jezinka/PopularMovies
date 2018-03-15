@@ -12,9 +12,7 @@ public class MovieDetails implements Parcelable {
     private String id;
     private String title;
     private String release_date;
-
     private String poster_path;
-
     private String overview;
     private Double vote_average;
     private boolean isFavorite;

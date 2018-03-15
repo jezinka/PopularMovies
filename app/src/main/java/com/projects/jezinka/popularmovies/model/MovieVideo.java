@@ -1,10 +1,9 @@
 package com.projects.jezinka.popularmovies.model;
 
 public class MovieVideo {
-    String id;
-    String key;
-    String name;
-    String site;
+    private String id;
+    private String key;
+    private String name;
 
     public String getId() {
         return id;
@@ -17,9 +16,4 @@ public class MovieVideo {
     public String getName() {
         return name;
     }
-
-    public String getSite() {
-        return site;
-    }
-
 }
