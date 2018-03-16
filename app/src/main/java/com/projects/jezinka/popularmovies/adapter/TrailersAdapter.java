@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.model.MovieVideo;
@@ -50,7 +49,6 @@ public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.trailer_list_item, parent, false);
-            viewHolder.name = convertView.findViewById(R.id.video_title_tv);
             viewHolder.trailersButton = convertView.findViewById(R.id.video_btn);
 
             result = convertView;
@@ -60,8 +58,6 @@ public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
             viewHolder = (ViewHolder) convertView.getTag();
             result = convertView;
         }
-
-        viewHolder.name.setText(dataModel.getName());
 
         Picasso.with(this.getContext())
                 .load(THUMBNAIL_YOUTUBE_URL + dataModel.getKey() + DEFAULT_JPG)
@@ -82,7 +78,6 @@ public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
     }
 
     private static class ViewHolder {
-        TextView name;
         ImageButton trailersButton;
     }
 }

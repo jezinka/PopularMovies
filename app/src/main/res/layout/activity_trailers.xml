@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     tools:context="com.projects.jezinka.popularmovies.activity.TrailersActivity">
 
-    <ListView
-        android:id="@+id/trailers_lv"
+    <GridView
+        android:id="@+id/trailers_gv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" />
 
 </android.support.constraint.ConstraintLayout>

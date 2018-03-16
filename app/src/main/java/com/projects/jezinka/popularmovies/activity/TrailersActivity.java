@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.projects.jezinka.popularmovies.BuildConfig;
 import com.projects.jezinka.popularmovies.R;
@@ -24,8 +24,8 @@ public class TrailersActivity extends AppCompatActivity {
 
     public static final String TAG = "TrailersActivity";
 
-    @BindView(R.id.trailers_lv)
-    ListView trailersListView;
+    @BindView(R.id.trailers_gv)
+    GridView trailersGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class TrailersActivity extends AppCompatActivity {
                 MovieVideo[] results = body.getResults();
                 Log.i("test", "Results length: " + String.valueOf(results.length));
                 TrailersAdapter adapter = new TrailersAdapter(mContext, results);
-                trailersListView.setAdapter(adapter);
+                trailersGridView.setAdapter(adapter);
             }
 
             @Override
