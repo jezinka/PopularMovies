@@ -33,10 +33,6 @@
             android:name=".activity.ReviewsActivity"
             android:label="@string/reviews" />
 
-        <activity
-            android:name=".activity.TrailersActivity"
-            android:label="@string/trailers" />
-
         <provider
             android:name="com.projects.jezinka.popularmovies.data.MovieDetailsContentProvider"
             android:authorities="com.projects.jezinka.popularmovies"

@@ -109,20 +109,31 @@
                     android:layout_height="wrap_content"
                     android:text="@string/reviews" />
 
-                <Button
-                    android:id="@+id/trailers_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/trailers" />
-
                 <ImageButton
                     android:id="@+id/favorites_btn"
                     android:contentDescription="@string/favorites_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="onFavoritesButtonClick"
                     android:src="@android:drawable/btn_star_big_off" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trailers"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/trailers_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -7,20 +7,30 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.projects.jezinka.popularmovies.BuildConfig;
 import com.projects.jezinka.popularmovies.R;
+import com.projects.jezinka.popularmovies.model.GenericList;
 import com.projects.jezinka.popularmovies.model.MovieDetails;
+import com.projects.jezinka.popularmovies.model.MovieVideo;
+import com.projects.jezinka.popularmovies.service.TheMovieDbService;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.ID;
@@ -39,6 +49,10 @@ public class DetailsActivity extends AppCompatActivity {
     private static final int BUTTON_ON = android.R.drawable.btn_star_big_on;
     private static final int BUTTON_OFF = android.R.drawable.btn_star_big_off;
 
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+    private static final String THUMBNAIL_YOUTUBE_URL = "http://img.youtube.com/vi/";
+    private static final String DEFAULT_JPG = "/mqdefault.jpg";
+
     MovieDetails movieDetails;
 
     @BindView(R.id.title_tv)
@@ -53,10 +67,10 @@ public class DetailsActivity extends AppCompatActivity {
     ImageView imageView;
     @BindView(R.id.review_btn)
     Button reviewButton;
-    @BindView(R.id.trailers_btn)
-    Button trailersButton;
     @BindView(R.id.favorites_btn)
     ImageButton favoritesButton;
+    @BindView(R.id.trailers_ll)
+    LinearLayout trailersLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +95,7 @@ public class DetailsActivity extends AppCompatActivity {
             movieDetails.setFavorite(getFavoriteButtonState());
         }
 
-        Picasso.with(this)
-                .load(movieDetails.getDetailPosterPath())
-                .placeholder(android.R.drawable.star_off)
-                .error(android.R.drawable.stat_notify_error)
-                .into(imageView);
-
-        titleTextView.setText(movieDetails.getTitle());
-        plotTextView.setText(movieDetails.getOverview());
-        releaseDateTextView.setText(movieDetails.getReleaseDate());
-        voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));
-        favoritesButton.setImageResource(getFavoriteButtonImage());
+        populateUI();
 
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,29 +108,21 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        trailersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
+        sendQueryForTrailers(movieDetails.getId());
+    }
 
-                Intent intent = new Intent(context, TrailersActivity.class);
-                intent.putExtra(MOVIE_ID, movieDetails.getId());
-                context.startActivity(intent);
-            }
-        });
+    private void populateUI() {
+        Picasso.with(this)
+                .load(movieDetails.getDetailPosterPath())
+                .placeholder(android.R.drawable.star_off)
+                .error(android.R.drawable.stat_notify_error)
+                .into(imageView);
 
-        favoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                movieDetails.setFavorite(!movieDetails.isFavorite());
-
-                if (movieDetails.isFavorite()) {
-                    addFavorites();
-                } else {
-                    removeFavorites();
-                }
-            }
-        });
+        titleTextView.setText(movieDetails.getTitle());
+        plotTextView.setText(movieDetails.getOverview());
+        releaseDateTextView.setText(movieDetails.getReleaseDate());
+        voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));
+        favoritesButton.setImageResource(getFavoriteButtonImage());
     }
 
     private void closeOnError() {
@@ -177,5 +173,60 @@ public class DetailsActivity extends AppCompatActivity {
 
     private int getFavoriteButtonImage() {
         return movieDetails.isFavorite() ? BUTTON_ON : BUTTON_OFF;
+    }
+
+    private void sendQueryForTrailers(String id) {
+        final Context mContext = this;
+        TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
+        final Call<GenericList<MovieVideo>> call = theMovieDbService.loadVideos(id, BuildConfig.MY_MOVIE_DB_API_KEY);
+
+        call.enqueue(new Callback<GenericList<MovieVideo>>() {
+            @Override
+            public void onResponse(@NonNull Call<GenericList<MovieVideo>> call, @NonNull Response<GenericList<MovieVideo>> response) {
+
+                GenericList<MovieVideo> body = response.body();
+                MovieVideo[] results = body.getResults();
+                Log.i("test", "Results length: " + String.valueOf(results.length));
+                for (final MovieVideo video : results) {
+                    final String key = video.getKey();
+                    ImageButton trailersButton = new ImageButton(mContext);
+
+                    Picasso.with(mContext)
+                            .load(THUMBNAIL_YOUTUBE_URL + key + DEFAULT_JPG)
+                            .placeholder(android.R.drawable.ic_media_play)
+                            .error(android.R.drawable.stat_notify_error)
+                            .into(trailersButton);
+
+                    trailersButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            String uri = YOUTUBE_BASE_URL + key;
+                            Uri webpage = Uri.parse(uri);
+                            Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
+                            mContext.startActivity(webIntent);
+                        }
+                    });
+
+                    trailersLayout.addView(trailersButton);
+                }
+            }
+
+            @Override
+            public void onFailure
+                    (@NonNull Call<GenericList<MovieVideo>> call, @NonNull Throwable t) {
+                Log.i(TAG, getResources().getString(R.string.no_results));
+            }
+        });
+    }
+
+    public void onFavoritesButtonClick(View view) {
+        movieDetails.setFavorite(!movieDetails.isFavorite());
+
+        if (movieDetails.isFavorite()) {
+            addFavorites();
+        } else {
+            removeFavorites();
+        }
     }
 }
