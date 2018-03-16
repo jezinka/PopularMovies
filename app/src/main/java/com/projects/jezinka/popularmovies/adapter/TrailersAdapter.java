@@ -12,8 +12,13 @@ import android.widget.TextView;
 
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.model.MovieVideo;
+import com.squareup.picasso.Picasso;
 
 public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com/watch?v=";
+    private static final String THUMBNAIL_YOUTUBE_URL = "http://img.youtube.com/vi/";
+    private static final String DEFAULT_JPG = "/mqdefault.jpg";
+
     private MovieVideo[] movieVideos;
 
     public TrailersAdapter(Context c, MovieVideo[] movieVideos) {
@@ -57,10 +62,17 @@ public class TrailersAdapter extends ArrayAdapter<MovieVideo> {
         }
 
         viewHolder.name.setText(dataModel.getName());
+
+        Picasso.with(this.getContext())
+                .load(THUMBNAIL_YOUTUBE_URL + dataModel.getKey() + DEFAULT_JPG)
+                .placeholder(android.R.drawable.ic_media_play)
+                .error(android.R.drawable.stat_notify_error)
+                .into(viewHolder.trailersButton);
+
         viewHolder.trailersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = "https://www.youtube.com/watch?v=" + dataModel.getKey();
+                String uri = YOUTUBE_BASE_URL + dataModel.getKey();
                 Uri webpage = Uri.parse(uri);
                 Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
                 getContext().startActivity(webIntent);
