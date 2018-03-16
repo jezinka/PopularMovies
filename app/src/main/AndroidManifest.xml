@@ -29,10 +29,6 @@
                 android:value=".activity.MainActivity" />
         </activity>
 
-        <activity
-            android:name=".activity.ReviewsActivity"
-            android:label="@string/reviews" />
-
         <provider
             android:name="com.projects.jezinka.popularmovies.data.MovieDetailsContentProvider"
             android:authorities="com.projects.jezinka.popularmovies"

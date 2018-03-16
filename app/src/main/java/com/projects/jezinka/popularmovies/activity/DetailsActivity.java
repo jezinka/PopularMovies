@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +21,7 @@ import com.projects.jezinka.popularmovies.BuildConfig;
 import com.projects.jezinka.popularmovies.R;
 import com.projects.jezinka.popularmovies.model.GenericList;
 import com.projects.jezinka.popularmovies.model.MovieDetails;
+import com.projects.jezinka.popularmovies.model.MovieReview;
 import com.projects.jezinka.popularmovies.model.MovieVideo;
 import com.projects.jezinka.popularmovies.service.TheMovieDbService;
 import com.squareup.picasso.Picasso;
@@ -65,12 +65,13 @@ public class DetailsActivity extends AppCompatActivity {
     TextView voteAverageTextView;
     @BindView(R.id.poster)
     ImageView imageView;
-    @BindView(R.id.review_btn)
-    Button reviewButton;
     @BindView(R.id.favorites_btn)
     ImageButton favoritesButton;
+
     @BindView(R.id.trailers_ll)
     LinearLayout trailersLayout;
+    @BindView(R.id.reviews_ll)
+    LinearLayout reviewsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,19 +97,8 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         populateUI();
-
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = view.getContext();
-
-                Intent intent = new Intent(context, ReviewsActivity.class);
-                intent.putExtra(MOVIE_ID, movieDetails.getId());
-                context.startActivity(intent);
-            }
-        });
-
-        sendQueryForTrailers(movieDetails.getId());
+        sendQueryForTrailers();
+        sendQueryForReviews();
     }
 
     private void populateUI() {
@@ -175,10 +165,10 @@ public class DetailsActivity extends AppCompatActivity {
         return movieDetails.isFavorite() ? BUTTON_ON : BUTTON_OFF;
     }
 
-    private void sendQueryForTrailers(String id) {
+    private void sendQueryForTrailers() {
         final Context mContext = this;
         TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
-        final Call<GenericList<MovieVideo>> call = theMovieDbService.loadVideos(id, BuildConfig.MY_MOVIE_DB_API_KEY);
+        final Call<GenericList<MovieVideo>> call = theMovieDbService.loadVideos(movieDetails.getId(), BuildConfig.MY_MOVIE_DB_API_KEY);
 
         call.enqueue(new Callback<GenericList<MovieVideo>>() {
             @Override
@@ -215,6 +205,42 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure
                     (@NonNull Call<GenericList<MovieVideo>> call, @NonNull Throwable t) {
+                Log.i(TAG, getResources().getString(R.string.no_results));
+            }
+        });
+    }
+
+    private void sendQueryForReviews() {
+        final Context mContext = this;
+        TheMovieDbService theMovieDbService = TheMovieDbService.retrofit.create(TheMovieDbService.class);
+        final Call<GenericList<MovieReview>> call = theMovieDbService.loadReviews(movieDetails.getId(), BuildConfig.MY_MOVIE_DB_API_KEY);
+
+        call.enqueue(new Callback<GenericList<MovieReview>>() {
+            @Override
+            public void onResponse(@NonNull Call<GenericList<MovieReview>> call, @NonNull Response<GenericList<MovieReview>> response) {
+
+                GenericList<MovieReview> body = response.body();
+                MovieReview[] results = body.getResults();
+                Log.i("test", "Results length: " + String.valueOf(results.length));
+                for (MovieReview movieReview : results) {
+                    LinearLayout reviewLayout = new LinearLayout(mContext);
+                    reviewLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    TextView authorTextView = new TextView(mContext);
+                    authorTextView.setText(getResources().getString(R.string.author, movieReview.getAuthor()));
+
+                    TextView contentTextView = new TextView(mContext);
+                    contentTextView.setText(movieReview.getContent());
+
+                    reviewLayout.addView(authorTextView);
+                    reviewLayout.addView(contentTextView);
+
+                    reviewsLayout.addView(reviewLayout);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GenericList<MovieReview>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
             }
         });
