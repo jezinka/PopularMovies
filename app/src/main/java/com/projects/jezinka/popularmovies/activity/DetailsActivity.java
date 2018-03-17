@@ -207,7 +207,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onFailure
                     (@NonNull Call<GenericList<MovieVideo>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
-                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -244,7 +244,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<GenericList<MovieReview>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
-                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         });
     }

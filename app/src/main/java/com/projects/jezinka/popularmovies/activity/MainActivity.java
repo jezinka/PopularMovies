@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<GenericList<MovieDetails>> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getLocalizedMessage());
-                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         });
     }
