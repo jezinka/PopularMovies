@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +45,6 @@ import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.Movie
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
-    public static final String MOVIE_ID = "ID";
     private static final String TAG = "Details Activity";
 
     private static final int BUTTON_ON = android.R.drawable.btn_star_big_on;
@@ -235,6 +235,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                     reviewLayout.addView(authorTextView);
                     reviewLayout.addView(contentTextView);
+                    reviewLayout.addView(getSeparator());
 
                     reviewsLayout.addView(reviewLayout);
                 }
@@ -246,6 +247,14 @@ public class DetailsActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @NonNull
+    private View getSeparator() {
+        View separator = new View(this);
+        separator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 4));
+        separator.setBackgroundColor(getResources().getColor(android.R.color.background_dark));
+        return separator;
     }
 
     public void onFavoritesButtonClick(View view) {
