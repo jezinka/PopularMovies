@@ -207,6 +207,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onFailure
                     (@NonNull Call<GenericList<MovieVideo>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
+                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -222,7 +223,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                 GenericList<MovieReview> body = response.body();
                 MovieReview[] results = body.getResults();
-                Log.i("test", "Results length: " + String.valueOf(results.length));
                 for (MovieReview movieReview : results) {
                     LinearLayout reviewLayout = new LinearLayout(mContext);
                     reviewLayout.setOrientation(LinearLayout.VERTICAL);
@@ -243,6 +243,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<GenericList<MovieReview>> call, @NonNull Throwable t) {
                 Log.i(TAG, getResources().getString(R.string.no_results));
+                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
             }
         });
     }

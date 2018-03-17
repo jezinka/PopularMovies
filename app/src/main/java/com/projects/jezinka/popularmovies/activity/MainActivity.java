@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.projects.jezinka.popularmovies.BuildConfig;
 import com.projects.jezinka.popularmovies.R;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<GenericList<MovieDetails>> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getLocalizedMessage());
+                Toast.makeText(mContext, "Something went wrong. Check the internet connection", Toast.LENGTH_LONG).show();
             }
         });
     }
