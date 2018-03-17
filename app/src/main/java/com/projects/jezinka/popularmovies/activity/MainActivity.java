@@ -2,6 +2,7 @@ package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -72,27 +73,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void sendQueryForFavorites() {
-        MovieDetails[] data;
+    class LoadFavoritesTask extends AsyncTask<Void, Void, Cursor> {
 
-        //TODO: async task
-        Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, TITLE);
+        Context mContext;
 
-        if (cursor != null && cursor.moveToFirst()) {
-            data = new MovieDetails[cursor.getCount()];
-            do {
-                data[cursor.getPosition()] = new MovieDetails(cursor);
+        LoadFavoritesTask(Context context) {
+            this.mContext = context;
+        }
 
-            } while (cursor.moveToNext());
-            MoviePostersAdapter adapter = new MoviePostersAdapter(this, data);
-            gridview.setAdapter(adapter);
-            cursor.close();
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return getContentResolver().query(CONTENT_URI, null, null, null, TITLE);
+        }
+
+        protected void onPostExecute(Cursor cursor) {
+            MovieDetails[] data;
+            if (cursor != null && cursor.moveToFirst()) {
+                data = new MovieDetails[cursor.getCount()];
+                do {
+                    data[cursor.getPosition()] = new MovieDetails(cursor);
+
+                } while (cursor.moveToNext());
+                MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, data);
+                gridview.setAdapter(adapter);
+                cursor.close();
+            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.popular:
                 sendQueryForMovies(POPULAR);
@@ -101,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 sendQueryForMovies(TOP_RATED);
                 return true;
             case R.id.favorites:
-                sendQueryForFavorites();
+                new LoadFavoritesTask(this).execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
