@@ -13,10 +13,10 @@ public class MovieDetails implements Parcelable {
     private String title;
     private String release_date;
     private String poster_path;
+    private String backdrop_path;
     private String overview;
     private Double vote_average;
     private boolean isFavorite;
-
     public boolean isFavorite() {
         return isFavorite;
     }
@@ -33,8 +33,8 @@ public class MovieDetails implements Parcelable {
         return release_date;
     }
 
-    public String getDetailPosterPath() {
-        return posterBasePath + "w342/" + poster_path;
+    public String getBackdropPoster() {
+        return posterBasePath + "w1000" + backdrop_path;
     }
 
     public String getListPosterPath() {
@@ -57,6 +57,10 @@ public class MovieDetails implements Parcelable {
         return poster_path;
     }
 
+    public String getBackdropPath() {
+        return backdrop_path;
+    }
+
     public MovieDetails(Parcel in) {
         this.id = in.readString();
         this.title = in.readString();
@@ -64,6 +68,7 @@ public class MovieDetails implements Parcelable {
         this.overview = in.readString();
         this.vote_average = in.readDouble();
         this.poster_path = in.readString();
+        this.backdrop_path = in.readString();
     }
 
     public MovieDetails(Cursor cursor) {
@@ -73,6 +78,7 @@ public class MovieDetails implements Parcelable {
         this.overview = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.OVERVIEW));
         this.vote_average = cursor.getDouble(cursor.getColumnIndex(MovieDetailsEntry.VOTE_AVERAGE));
         this.poster_path = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.POSTER));
+        this.backdrop_path = cursor.getString(cursor.getColumnIndex(MovieDetailsEntry.BACKDROP));
         this.isFavorite = true;
     }
 
@@ -101,6 +107,7 @@ public class MovieDetails implements Parcelable {
         parcel.writeString(overview);
         parcel.writeDouble(vote_average);
         parcel.writeString(poster_path);
+        parcel.writeString(backdrop_path);
     }
 
     public static final Parcelable.Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {

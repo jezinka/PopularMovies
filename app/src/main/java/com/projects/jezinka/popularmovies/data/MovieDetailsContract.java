@@ -21,5 +21,6 @@ public class MovieDetailsContract {
         public static final String OVERVIEW = "OVERVIEW";
         public static final String VOTE_AVERAGE = "VOTE_AVERAGE";
         public static final String RELEASE_DATE = "RELEASE_DATE";
+        public static final String BACKDROP = "BACKDROP";
     }
 }

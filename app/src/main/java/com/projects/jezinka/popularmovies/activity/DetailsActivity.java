@@ -33,6 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.BACKDROP;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.ID;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.OVERVIEW;
@@ -103,7 +104,9 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void populateUI() {
         Picasso.with(this)
-                .load(movieDetails.getDetailPosterPath())
+                .load(movieDetails.getBackdropPoster())
+                .fit()
+                .centerCrop()
                 .placeholder(android.R.drawable.star_off)
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageView);
@@ -134,6 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
         contentValues.put(OVERVIEW, movieDetails.getOverview());
         contentValues.put(RELEASE_DATE, movieDetails.getReleaseDate());
         contentValues.put(VOTE_AVERAGE, movieDetails.getVoteAverage());
+        contentValues.put(BACKDROP, movieDetails.getBackdropPath());
 
         Uri uri = getContentResolver().insert(CONTENT_URI, contentValues);
         if (uri != null) {
