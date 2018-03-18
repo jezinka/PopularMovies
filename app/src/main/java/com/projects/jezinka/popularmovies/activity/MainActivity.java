@@ -1,6 +1,7 @@
 package com.projects.jezinka.popularmovies.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
+    public static final String FAVORITES = "favorites";
 
     @BindView(R.id.gridview)
     GridView gridview;
@@ -45,7 +47,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        sendQueryForMovies(POPULAR);
+        String sortingParam = loadSortingPreference();
+        getMovieList(sortingParam);
+    }
+
+    @NonNull
+    private String loadSortingPreference() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getString(getString(R.string.sort_criterion_key), POPULAR);
+    }
+
+    private void getMovieList(String param) {
+        if (param.equals(FAVORITES)) {
+            new LoadFavoritesTask(this).execute();
+        } else {
+            sendQueryForMovies(param);
+        }
+
     }
 
     private void sendQueryForMovies(String param) {
@@ -103,19 +121,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        String sortingParam;
+
         switch (item.getItemId()) {
             case R.id.popular:
-                sendQueryForMovies(POPULAR);
-                return true;
+                sortingParam = POPULAR;
+                break;
             case R.id.rated:
-                sendQueryForMovies(TOP_RATED);
-                return true;
+                sortingParam = TOP_RATED;
+                break;
             case R.id.favorites:
-                new LoadFavoritesTask(this).execute();
-                return true;
+                sortingParam = FAVORITES;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        saveSortingPreference(sortingParam);
+        getMovieList(sortingParam);
+
+        return true;
+    }
+
+    private void saveSortingPreference(String sortingParam) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.sort_criterion_key), sortingParam);
+        editor.apply();
     }
 
     @Override

@@ -16,4 +16,5 @@
     <string name="top_rated">Top rated</string>
     <string name="favorites">Favorites</string>
     <string name="connection_error">Something went wrong. Check the internet connection</string>
+    <string name="sort_criterion_key">sorting</string>
 </resources>
