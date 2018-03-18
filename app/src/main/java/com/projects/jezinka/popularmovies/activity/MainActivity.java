@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             } while (cursor.moveToNext());
             adapter = new MoviePostersAdapter(this, data);
             gridview.setAdapter(adapter);
-            cursor.close();
         }
     }
 
