@@ -3,9 +3,11 @@ package com.projects.jezinka.popularmovies.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -30,13 +32,16 @@ import retrofit2.Response;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.TITLE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MainActivity";
 
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
     public static final String FAVORITES = "favorites";
+
+    private static final int LOADER_ID = 0x01;
+    private MoviePostersAdapter adapter;
 
     @BindView(R.id.gridview)
     GridView gridview;
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovieList(String param) {
         if (param.equals(FAVORITES)) {
-            new LoadFavoritesTask(this).execute();
+            getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         } else {
             sendQueryForMovies(param);
         }
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 GenericList<MovieDetails> body = response.body();
 
                 if (body != null) {
-                    MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, body.getResults());
+                    adapter = new MoviePostersAdapter(mContext, body.getResults());
                     gridview.setAdapter(adapter);
                 }
             }
@@ -91,32 +96,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class LoadFavoritesTask extends AsyncTask<Void, Void, Cursor> {
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(this, CONTENT_URI, null, null, null, TITLE);
+    }
 
-        Context mContext;
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        MovieDetails[] data;
+        if (cursor != null && cursor.moveToFirst()) {
+            data = new MovieDetails[cursor.getCount()];
+            do {
+                data[cursor.getPosition()] = new MovieDetails(cursor);
 
-        LoadFavoritesTask(Context context) {
-            this.mContext = context;
+            } while (cursor.moveToNext());
+            adapter = new MoviePostersAdapter(this, data);
+            gridview.setAdapter(adapter);
+            cursor.close();
         }
+    }
 
-        @Override
-        protected Cursor doInBackground(Void... voids) {
-            return getContentResolver().query(CONTENT_URI, null, null, null, TITLE);
-        }
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
-        protected void onPostExecute(Cursor cursor) {
-            MovieDetails[] data;
-            if (cursor != null && cursor.moveToFirst()) {
-                data = new MovieDetails[cursor.getCount()];
-                do {
-                    data[cursor.getPosition()] = new MovieDetails(cursor);
-
-                } while (cursor.moveToNext());
-                MoviePostersAdapter adapter = new MoviePostersAdapter(mContext, data);
-                gridview.setAdapter(adapter);
-                cursor.close();
-            }
-        }
     }
 
     @Override
