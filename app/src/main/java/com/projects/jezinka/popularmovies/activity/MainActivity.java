@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        adapter = new MoviePostersAdapter(this);
+        gridview.setAdapter(adapter);
+
         String sortingParam = loadSortingPreference();
         getMovieList(sortingParam);
     }
@@ -83,8 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 GenericList<MovieDetails> body = response.body();
 
                 if (body != null) {
-                    adapter = new MoviePostersAdapter(mContext, body.getResults());
-                    gridview.setAdapter(adapter);
+                    adapter.updateResults(body.getResults());
                 }
             }
 
@@ -110,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 data[cursor.getPosition()] = new MovieDetails(cursor);
 
             } while (cursor.moveToNext());
-            adapter = new MoviePostersAdapter(this, data);
-            gridview.setAdapter(adapter);
+            adapter.updateResults(data);
         }
     }
 

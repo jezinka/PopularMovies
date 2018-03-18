@@ -16,21 +16,21 @@ public class MoviePostersAdapter extends BaseAdapter {
     private Context mContext;
     private MovieDetails[] mMovieDetails;
 
-    public MoviePostersAdapter(Context c, MovieDetails[] movieDetails) {
+    public MoviePostersAdapter(Context c) {
         mContext = c;
-        mMovieDetails = movieDetails;
+        mMovieDetails = new MovieDetails[0];
     }
 
     public int getCount() {
         return mMovieDetails.length;
     }
 
-    public Object getItem(int position) {
-        return null;
+    public MovieDetails getItem(int position) {
+        return this.mMovieDetails[position];
     }
 
     public long getItemId(int position) {
-        return 0;
+        return Long.valueOf(this.getItem(position).getId());
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -60,5 +60,10 @@ public class MoviePostersAdapter extends BaseAdapter {
             }
         });
         return imageView;
+    }
+
+    public void updateResults(MovieDetails[] results) {
+        this.mMovieDetails = results;
+        this.notifyDataSetChanged();
     }
 }
