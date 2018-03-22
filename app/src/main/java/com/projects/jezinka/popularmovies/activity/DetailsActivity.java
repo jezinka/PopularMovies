@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +57,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     MovieDetails movieDetails;
 
-    @BindView(R.id.title_tv)
-    TextView titleTextView;
     @BindView(R.id.plot_tv)
     TextView plotTextView;
     @BindView(R.id.realease_date_tv)
@@ -68,6 +67,8 @@ public class DetailsActivity extends AppCompatActivity {
     ImageView imageView;
     @BindView(R.id.favorites_btn)
     ImageButton favoritesButton;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.trailers_ll)
     LinearLayout trailersLayout;
@@ -111,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity {
                 .error(android.R.drawable.stat_notify_error)
                 .into(imageView);
 
-        titleTextView.setText(movieDetails.getTitle());
+        toolbar.setTitle(movieDetails.getTitle());
         plotTextView.setText(movieDetails.getOverview());
         releaseDateTextView.setText(movieDetails.getReleaseDate());
         voteAverageTextView.setText(String.valueOf(movieDetails.getVoteAverage()));

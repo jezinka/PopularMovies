@@ -34,7 +34,8 @@ public class MovieDetails implements Parcelable {
     }
 
     public String getBackdropPoster() {
-        return posterBasePath + "w1000" + backdrop_path;
+        System.out.println(backdrop_path);
+        return posterBasePath + "w500" + backdrop_path;
     }
 
     public String getListPosterPath() {
