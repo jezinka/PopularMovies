@@ -31,7 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.CONTENT_URI;
-import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry.TITLE;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this, CONTENT_URI, null, null, null, TITLE);
+        return new CursorLoader(this, CONTENT_URI, null, null, null, "title");
     }
 
     @Override

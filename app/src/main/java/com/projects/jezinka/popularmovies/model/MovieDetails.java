@@ -4,11 +4,15 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 import static com.projects.jezinka.popularmovies.data.MovieDetailsContract.MovieDetailsEntry;
 
-public class MovieDetails implements Parcelable {
+public class MovieDetails extends RealmObject implements Parcelable {
     private static final String posterBasePath = "https://image.tmdb.org/t/p/";
 
+    @PrimaryKey
     private String id;
     private String title;
     private String release_date;
@@ -17,6 +21,39 @@ public class MovieDetails implements Parcelable {
     private String overview;
     private Double vote_average;
     private boolean isFavorite;
+
+    public MovieDetails() {
+        super();
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
+
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public void setVote_average(Double vote_average) {
+        this.vote_average = vote_average;
+    }
+
     public boolean isFavorite() {
         return isFavorite;
     }
